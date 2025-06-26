@@ -42,6 +42,7 @@ class TweetsController < ApplicationController
     @comments = @tweet.comments
     @comment = Comment.new
   end
+  
 
   def edit
     @tweet = Tweet.find(params[:id])

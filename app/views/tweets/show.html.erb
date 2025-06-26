@@ -3,6 +3,10 @@
 <div class="tweet">
   <p><%= @tweet.body %></p>
   <p><%= @tweet.created_at %></p>
+  <p>
+  <%= raw sanitize_with_hashtags(@tweet.body) %>
+  </p>
+
     <% if user_signed_in? %>
       <% if current_user.already_liked?(@tweet) %>
         <%= link_to tweet_like_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :delete } do %>

@@ -11,6 +11,7 @@
   <%= link_to "マイページへ", user_path(current_user.id) %>
 <% end %>
 <%= link_to "新規投稿へ",  new_tweet_path %>
+<%= link_to 'ルーレット', roulette_post_path %>
 <%= page_entries_info @tweets %>
 <%= paginate @tweets %>
 

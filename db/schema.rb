@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_31_154724) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_26_013554) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,8 +45,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_31_154724) do
     t.integer "tweet_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "shop_id"
+    t.index ["shop_id"], name: "index_comments_on_shop_id"
     t.index ["tweet_id"], name: "index_comments_on_tweet_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "hashtags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_hashtags_on_name", unique: true
   end
 
   create_table "likes", force: :cascade do |t|
@@ -58,10 +67,28 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_31_154724) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "shops", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "address"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tweet_hashtags", force: :cascade do |t|
+    t.integer "tweet_id", null: false
+    t.integer "hashtag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashtag_id"], name: "index_tweet_hashtags_on_hashtag_id"
+    t.index ["tweet_id"], name: "index_tweet_hashtags_on_tweet_id"
   end
 
   create_table "tweet_tag_relations", force: :cascade do |t|
@@ -96,10 +123,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_31_154724) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "shops"
   add_foreign_key "comments", "tweets"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "tweets"
   add_foreign_key "likes", "users"
+  add_foreign_key "tweet_hashtags", "hashtags"
+  add_foreign_key "tweet_hashtags", "tweets"
   add_foreign_key "tweet_tag_relations", "tags"
   add_foreign_key "tweet_tag_relations", "tweets"
 end
